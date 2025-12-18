@@ -4,12 +4,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.8.34408.163
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentService.Api", "Payment Service\PaymentService.Api.csproj", "{300EDB1D-B213-4742-A919-E40FEFEA6F05}"
+	ProjectSection(ProjectDependencies) = postProject
+		{31FEDB48-A0C0-41B8-8EEE-D80828AE9E69} = {31FEDB48-A0C0-41B8-8EEE-D80828AE9E69}
+		{A8BC735C-5375-435E-953F-02E3A63E4D6A} = {A8BC735C-5375-435E-953F-02E3A63E4D6A}
+		{F2830E25-3473-47F4-A076-C18813337F2D} = {F2830E25-3473-47F4-A076-C18813337F2D}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentService.Domain", "PaymentService.Domain\PaymentService.Domain.csproj", "{F2830E25-3473-47F4-A076-C18813337F2D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentService.Application", "PaymentService.Application\PaymentService.Application.csproj", "{A8BC735C-5375-435E-953F-02E3A63E4D6A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F2830E25-3473-47F4-A076-C18813337F2D} = {F2830E25-3473-47F4-A076-C18813337F2D}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentService.Infrastructure", "PaymentService.Infrastructure\PaymentService.Infrastructure.csproj", "{31FEDB48-A0C0-41B8-8EEE-D80828AE9E69}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F2830E25-3473-47F4-A076-C18813337F2D} = {F2830E25-3473-47F4-A076-C18813337F2D}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

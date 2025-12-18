@@ -6,4 +6,13 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="14.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Payments\UpdatePaymentStatus\" />
+    <Folder Include="Payments\VerifyPayment\" />
+  </ItemGroup>
+
 </Project>
