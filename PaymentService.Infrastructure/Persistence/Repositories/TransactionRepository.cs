@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PaymentService.Domain.Entities;
 using PaymentService.Domain.Interfaces;
+using PaymentService.Infrastructure.Persistence.Configurations;
 
 namespace PaymentService.Infrastructure.Persistence.Repositories;
 
@@ -8,7 +9,30 @@ public class TransactionRepository(PaymentDbContext dbContext) : ITransactionRep
 {
     public async Task Add(Transaction transaction)
     {
-        await dbContext.AddAsync(transaction);
-        await dbContext.SaveChangesAsync();
+        try
+        {
+            await dbContext.AddAsync(transaction);
+            await dbContext.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            throw new DatabaseException("خطا در ثبت توکن", e);
+        }
+    }
+
+    public Task<Transaction?> GetByToken(Guid token)
+    => dbContext.Transactions.FirstOrDefaultAsync(e => e.Token == token.ToString());
+
+    public async Task SetAppCode(Transaction transaction, string appCode)
+    {
+        try
+        {
+            transaction.AppCode = appCode;
+            await dbContext.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            throw new DatabaseException("خطا در ثبت app code", e);
+        }
     }
 }

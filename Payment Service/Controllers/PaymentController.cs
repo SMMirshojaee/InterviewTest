@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using PaymentService.Api.Models;
 using PaymentService.Application.Models;
 using PaymentService.Application.Payments.GetToken;
+using PaymentService.Application.Payments.VerifyPayment;
 
 namespace PaymentService.Api.Controllers
 {
@@ -26,5 +27,14 @@ namespace PaymentService.Api.Controllers
             TokenResponse response = await _mediator.Send(_mapper.Map<GetTokenCommand>(tokenRequest));
             return Ok(response);
         }
+
+        [HttpPost("verify")]
+        public async Task<IActionResult> Verify(VerifyRequest verifyRequest)
+        {
+            VerifyResponse response = await _mediator.Send(_mapper.Map<VerifyCommand>(verifyRequest));
+
+            return Ok(response);
+        }
+
     }
 }
