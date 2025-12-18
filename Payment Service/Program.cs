@@ -6,6 +6,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using PaymentService.Infrastructure.Persistence;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,7 +37,9 @@ builder.Host.ConfigureContainer<ContainerBuilder>((context, containerBuilder) =>
 });
 builder.Services.AddDbContext<PaymentDbContext>(options =>
     options.UseSqlServer(appSetting.ConnectionString));
+
 var app = builder.Build();
+app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
