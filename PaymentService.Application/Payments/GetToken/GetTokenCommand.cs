@@ -1,5 +1,14 @@
-﻿namespace PaymentService.Application.Payments.GetToken;
+﻿using MediatR;
+using PaymentService.Application.Models;
 
-internal class GetTokenCommand
+namespace PaymentService.Application.Payments.GetToken;
+
+public record GetTokenCommand(string TerminalNo
+, decimal Amount
+, string RedirectUrl
+, string ReservationNumber
+, string PhoneNumber
+    ) : IRequest<TokenResponse>
 {
+
 }

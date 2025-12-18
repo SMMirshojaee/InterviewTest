@@ -8,25 +8,25 @@ namespace PaymentService.Domain.Entities;
 public class Transaction
 {
     public Guid Id { get; set; } = Guid.NewGuid();
-    
+
     [Required]
-    public  string TerminalNo { get; set; } = null!;
+    public string TerminalNo { get; set; } = null!;
 
     [Required]
     public decimal Amount { get; set; }
-    
+
     [Required]
     public string RedirectUrl { get; set; } = null!;
-    
-    [Required]
-    public  string ReservationNumber { get; set; } = null!;
-    
-    [Required]
-    public  string PhoneNumber { get; set; } = null!;
 
-    public string Token { get; set; } // unique GUID
+    [Required]
+    public string ReservationNumber { get; set; } = null!;
 
-    public string? RRN { get; set; } // nullable
+    [Required]
+    public string PhoneNumber { get; set; } = null!;
+
+    public string Token { get; set; }
+
+    public string? RRN { get; set; }
 
     public PaymentStatus Status { get; set; } = PaymentStatus.Pending;
 
@@ -34,5 +34,5 @@ public class Transaction
 
     public DateTime? UpdatedAt { get; set; }
 
-    public string? AppCode { get; set; } // nullable
+    public string? AppCode { get; set; }
 }

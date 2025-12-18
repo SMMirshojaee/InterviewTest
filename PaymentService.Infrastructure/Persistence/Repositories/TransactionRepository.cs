@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
+using PaymentService.Domain.Entities;
+using PaymentService.Domain.Interfaces;
 
-namespace PaymentService.Infrastructure.Persistence.Repositories
+namespace PaymentService.Infrastructure.Persistence.Repositories;
+
+public class TransactionRepository(PaymentDbContext dbContext) : ITransactionRepository
 {
-    internal class TransactionRepository
+    public async Task Add(Transaction transaction)
     {
+        await dbContext.AddAsync(transaction);
+        await dbContext.SaveChangesAsync();
     }
 }

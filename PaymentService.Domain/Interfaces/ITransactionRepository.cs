@@ -1,5 +1,8 @@
-﻿namespace PaymentService.Domain.Interfaces;
+﻿using PaymentService.Domain.Entities;
 
-internal interface ITransactionRepository
+namespace PaymentService.Domain.Interfaces;
+
+public interface ITransactionRepository
 {
+    Task Add(Transaction transaction);
 }

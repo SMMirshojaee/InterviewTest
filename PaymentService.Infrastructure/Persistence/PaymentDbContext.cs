@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
+using PaymentService.Domain.Entities;
 
-namespace PaymentService.Infrastructure.Persistence
+namespace PaymentService.Infrastructure.Persistence;
+
+public class PaymentDbContext : DbContext
 {
-    internal class PaymentDbContext
+    public PaymentDbContext(DbContextOptions<PaymentDbContext> options)
+        : base(options)
     {
+
     }
+
+    public DbSet<Transaction> Transactions { get; set; }
+
 }

@@ -15,4 +15,8 @@
     <Folder Include="Payments\VerifyPayment\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PaymentService.Domain\PaymentService.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
