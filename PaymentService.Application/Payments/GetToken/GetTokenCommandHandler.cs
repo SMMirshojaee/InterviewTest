@@ -8,19 +8,13 @@ using PaymentService.Domain.Interfaces;
 
 namespace PaymentService.Application.Payments.GetToken;
 
-public class GetTokenCommandHandler : IRequestHandler<GetTokenCommand, TokenResponse>
+public class GetTokenCommandHandler(IOptions<ServiceUrls> serviceUrls, ITransactionRepository repository)
+    : IRequestHandler<GetTokenCommand, TokenResponse>
 {
-    private readonly ITransactionRepository _repository;
-    private readonly string _gatewayServiceUrl;
-    public GetTokenCommandHandler(IOptions<ServiceUrls> serviceUrls, ITransactionRepository repository)
-    {
-        _repository = repository;
-        _gatewayServiceUrl = serviceUrls.Value.GatewayServiceUrl;
-    }
+    private readonly string _gatewayServiceUrl = serviceUrls.Value.GatewayServiceUrl;
+
     public async Task<TokenResponse> Handle(GetTokenCommand request, CancellationToken cancellationToken)
     {
-        if (request is { Amount: <= 0 })
-            return new TokenResponse { IsSuccess = false, Message = "ورودی amount نامعتبر است" };
         Guid token = Guid.NewGuid();
         Transaction newTransaction = new()
         {
@@ -32,7 +26,7 @@ public class GetTokenCommandHandler : IRequestHandler<GetTokenCommand, TokenResp
             Token = token.ToString(),
         };
 
-        await _repository.Add(newTransaction);
-        return new TokenResponse { IsSuccess = true, GatewayUrl = $"{_gatewayServiceUrl}{token}", Token = token };
+        await repository.Add(newTransaction);
+        return new TokenResponse(IsSuccess: true, GatewayUrl: $"{_gatewayServiceUrl}{token}", Token: token);
     }
 }

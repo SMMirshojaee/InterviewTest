@@ -4,37 +4,25 @@ using Microsoft.AspNetCore.Mvc;
 using PaymentService.Api.Models;
 using PaymentService.Application.Models;
 using PaymentService.Application.Payments.GetToken;
+using PaymentService.Application.Payments.UpdatePaymentStatus;
 using PaymentService.Application.Payments.VerifyPayment;
 
 namespace PaymentService.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PaymentController : ControllerBase
+    public class PaymentController(IMediator mediator, IMapper mapper) : ControllerBase
     {
-        private readonly IMediator _mediator;
-        private readonly IMapper _mapper;
-
-        public PaymentController(IMediator mediator, IMapper mapper)
-        {
-            _mapper = mapper;
-            _mediator = mediator;
-        }
-
         [HttpPost("get-token")]
-        public async Task<IActionResult> GetToken(TokenRequest tokenRequest)
-        {
-            TokenResponse response = await _mediator.Send(_mapper.Map<GetTokenCommand>(tokenRequest));
-            return Ok(response);
-        }
+        public async Task<IActionResult> GetToken(TokenDto tokenRequest) => 
+            Ok(await mediator.Send(mapper.Map<GetTokenCommand>(tokenRequest)));
 
         [HttpPost("verify")]
-        public async Task<IActionResult> Verify(VerifyRequest verifyRequest)
-        {
-            VerifyResponse response = await _mediator.Send(_mapper.Map<VerifyCommand>(verifyRequest));
+        public async Task<IActionResult> Verify(VerifyDto verifyRequest) => 
+            Ok(await mediator.Send(mapper.Map<VerifyCommand>(verifyRequest)));
 
-            return Ok(response);
-        }
-
+        [HttpPost("update-status")]
+        public async Task<IActionResult> UpdateStatus(UpdateStatusDto updateStatusRequest) => 
+            Ok(await mediator.Send(mapper.Map<UpdateStatusCommand>(updateStatusRequest)));
     }
 }

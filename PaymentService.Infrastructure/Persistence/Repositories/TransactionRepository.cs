@@ -35,4 +35,16 @@ public class TransactionRepository(PaymentDbContext dbContext) : ITransactionRep
             throw new DatabaseException("خطا در ثبت app code", e);
         }
     }
+
+    public async Task SaveChanges()
+    {
+        try
+        {
+            await dbContext.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            throw new DatabaseException("خطا در اعمال تغییرات", e);
+        }
+    }
 }

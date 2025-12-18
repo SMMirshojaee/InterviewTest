@@ -7,49 +7,46 @@ using PaymentService.Domain.Enums;
 
 namespace PaymentService.Application.Payments.VerifyPayment;
 
-public class VerifyCommandHandler : IRequestHandler<VerifyCommand, VerifyResponse>
+public class VerifyCommandHandler(ITransactionRepository repository) : IRequestHandler<VerifyCommand, VerifyResponse>
 {
-    private readonly ITransactionRepository _repository;
-    public VerifyCommandHandler(ITransactionRepository repository)
-    {
-        _repository = repository;
-    }
     public async Task<VerifyResponse> Handle(VerifyCommand request, CancellationToken cancellationToken)
     {
-        Transaction? transaction = await _repository.GetByToken(request.Token);
+        Transaction? transaction = await repository.GetByToken(request.Token);
         if (transaction is null)
             throw new ValidationException("توکن نامعتبر است");
 
         if (IsExpired(transaction))
             return new VerifyResponse
-            {
-                IsSuccess = false,
-                Status = nameof(PaymentStatus.Expired),
-                Amount = transaction.Amount,
-                ReservationNumber = transaction.ReservationNumber,
-                Message = "زمان پرداخت منقضی شده است"
-            };
+            (
+                IsSuccess: false,
+                Status: nameof(PaymentStatus.Expired),
+                Amount: transaction.Amount,
+                ReservationNumber: transaction.ReservationNumber,
+                Rrn: null,
+                Message: "زمان پرداخت منقضی شده است"
+            );
         if (transaction.Status == PaymentStatus.Failed)
             return new VerifyResponse
-            {
-                IsSuccess = false,
-                Status = nameof(PaymentStatus.Failed),
-                Amount = transaction.Amount,
-                ReservationNumber = transaction.ReservationNumber,
-                Message = "پرداخت ناموفق بود"
-            };
+            (
+                IsSuccess: false,
+                Status: nameof(PaymentStatus.Failed),
+                Amount: transaction.Amount,
+                ReservationNumber: transaction.ReservationNumber,
+                Rrn: null,
+                Message: "پرداخت ناموفق بود"
+            );
         if (transaction.Status == PaymentStatus.Success)
         {
-            await _repository.SetAppCode(transaction, request.AppCode);
+            await repository.SetAppCode(transaction, request.AppCode);
             return new VerifyResponse
-            {
-                IsSuccess = true,
-                Status = nameof(PaymentStatus.Success),
-                Amount = transaction.Amount,
-                ReservationNumber = transaction.ReservationNumber,
-                Rrn = transaction.RRN,
-                Message = "پرداخت با موفقیت تایید شد"
-            };
+            (
+                IsSuccess: true,
+                Status: nameof(PaymentStatus.Success),
+                Amount: transaction.Amount,
+                ReservationNumber: transaction.ReservationNumber,
+                Rrn: transaction.RRN,
+                Message: "پرداخت با موفقیت تایید شد"
+            );
         }
 
         throw new ValidationException("توکن نامعتبر است");

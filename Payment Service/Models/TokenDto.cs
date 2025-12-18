@@ -2,7 +2,7 @@
 
 namespace PaymentService.Api.Models;
 
-public class TokenRequest
+public class TokenDto
 {
     [Required(ErrorMessage = "شماره ترمینال الزامی است")]
     public required string TerminalNo { get; set; }
