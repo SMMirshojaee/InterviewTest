@@ -1,6 +1,5 @@
 ﻿using GatewayService.Application.Features.Pay;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GatewayService.Api.Controllers

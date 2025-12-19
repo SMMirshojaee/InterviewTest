@@ -1,3 +1,4 @@
+using GatewayService.Api.Middleware;
 using GatewayService.Application.Common;
 using GatewayService.Application.Features.Pay;
 
@@ -22,6 +23,7 @@ builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
+app.UseMiddleware<ExceptionMiddleware>();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
