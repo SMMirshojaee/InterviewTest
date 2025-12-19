@@ -1,14 +1,13 @@
 ﻿using MassTransit;
 using SHARE.Model;
 
-namespace NotificationService.Console.Consumers
+namespace NotificationService.Console.Consumers;
+
+public class PayConsumer : IConsumer<PayMessage>
 {
-    public class PayConsumer : IConsumer<PayMessage>
+    public Task Consume(ConsumeContext<PayMessage> context)
     {
-        public Task Consume(ConsumeContext<PayMessage> context)
-        {
-            WriteLine($"{DateTime.Now:yyyy/MM/dd HH:mm:ss}:Pay :{context.Message}");
-            return Task.CompletedTask;
-        }
+        WriteLine($"{DateTime.Now:yyyy/MM/dd HH:mm:ss}:Pay :{context.Message}");
+        return Task.CompletedTask;
     }
 }

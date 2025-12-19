@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PaymentService.Infrastructure.Persistence.Configurations;
+﻿namespace PaymentService.Infrastructure.Persistence.Configurations;
 
 public class DatabaseException : Exception
 {

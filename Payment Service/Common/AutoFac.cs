@@ -1,6 +1,5 @@
 ﻿using Autofac;
 using PaymentService.Infrastructure.Persistence.Repositories;
-using System.Reflection;
 using PaymentService.Domain.Interfaces;
 using Module = Autofac.Module;
 

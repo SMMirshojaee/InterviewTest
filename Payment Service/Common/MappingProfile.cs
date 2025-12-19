@@ -4,15 +4,14 @@ using PaymentService.Application.Payments.GetToken;
 using PaymentService.Application.Payments.UpdatePaymentStatus;
 using PaymentService.Application.Payments.VerifyPayment;
 
-namespace PaymentService.Api.Common
+namespace PaymentService.Api.Common;
+
+public class MappingProfile : Profile
 {
-    public class MappingProfile : Profile
+    public MappingProfile()
     {
-        public MappingProfile()
-        {
-            CreateMap<TokenDto, GetTokenCommand>();
-            CreateMap<VerifyDto, VerifyCommand>();
-            CreateMap<UpdateStatusDto, UpdateStatusCommand>();
-        }
+        CreateMap<TokenDto, GetTokenCommand>();
+        CreateMap<VerifyDto, VerifyCommand>();
+        CreateMap<UpdateStatusDto, UpdateStatusCommand>();
     }
 }

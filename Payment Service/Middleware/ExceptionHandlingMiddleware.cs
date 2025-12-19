@@ -1,46 +1,43 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using MassTransit;
-using MediatR;
 using PaymentService.Infrastructure.Persistence.Configurations;
 using SHARE.Model;
 
-namespace PaymentService.Api.Middleware
+namespace PaymentService.Api.Middleware;
+
+public class ExceptionMiddleware(RequestDelegate next, IPublishEndpoint publisher)
 {
-    public class ExceptionMiddleware(RequestDelegate next, IPublishEndpoint publisher)
+    public async Task InvokeAsync(HttpContext context)
     {
-        public async Task InvokeAsync(HttpContext context)
+        try
         {
-            try
-            {
-                await next(context);
-            }
-            catch (Exception ex)
-            {
-                await HandleExceptionAsync(context, ex, publisher);
-            }
+            await next(context);
         }
-
-        private static async Task HandleExceptionAsync(HttpContext context, Exception exception, IPublishEndpoint publisher)
+        catch (Exception ex)
         {
-            context.Response.ContentType = "application/json";
-            context.Response.StatusCode = exception switch
-            {
-                ValidationException => StatusCodes.Status400BadRequest,
-                UnauthorizedAccessException => StatusCodes.Status401Unauthorized,
-                DatabaseException => StatusCodes.Status500InternalServerError,
-                _ => StatusCodes.Status500InternalServerError
-            };
-
-            await publisher.Publish(new ExceptionMessage(exception.Message, exception.StackTrace));
-
-            var response = new
-            {
-                statusCode = context.Response.StatusCode,
-                message = exception.Message
-            };
-
-            await context.Response.WriteAsJsonAsync(response);
+            await HandleExceptionAsync(context, ex, publisher);
         }
     }
 
+    private static async Task HandleExceptionAsync(HttpContext context, Exception exception, IPublishEndpoint publisher)
+    {
+        context.Response.ContentType = "application/json";
+        context.Response.StatusCode = exception switch
+        {
+            ValidationException => StatusCodes.Status400BadRequest,
+            UnauthorizedAccessException => StatusCodes.Status401Unauthorized,
+            DatabaseException => StatusCodes.Status500InternalServerError,
+            _ => StatusCodes.Status500InternalServerError
+        };
+
+        await publisher.Publish(new ExceptionMessage(exception.Message, exception.StackTrace));
+
+        var response = new
+        {
+            statusCode = context.Response.StatusCode,
+            message = exception.Message
+        };
+
+        await context.Response.WriteAsJsonAsync(response);
+    }
 }

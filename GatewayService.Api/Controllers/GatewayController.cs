@@ -2,14 +2,13 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GatewayService.Api.Controllers
+namespace GatewayService.Api.Controllers;
+
+[Route("api/[controller]/[action]")]
+[ApiController]
+public class GatewayController(IMediator mediator) : ControllerBase
 {
-    [Route("api/[controller]/[action]")]
-    [ApiController]
-    public class GatewayController(IMediator mediator) : ControllerBase
-    {
-        [HttpGet("{token}")]
-        public async Task<IActionResult> Pay([FromRoute] Guid token) =>
-            Ok(await mediator.Send(new PayCommand(token)));
-    }
+    [HttpGet("{token}")]
+    public async Task<IActionResult> Pay([FromRoute] Guid token) =>
+        Ok(await mediator.Send(new PayCommand(token)));
 }

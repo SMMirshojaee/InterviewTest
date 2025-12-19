@@ -1,5 +1,4 @@
 ﻿using PaymentService.Api.Common;
-using System.Reflection;
 using PaymentService.Application.Common;
 using PaymentService.Application.Payments.GetToken;
 using Autofac;
@@ -10,7 +9,6 @@ using Microsoft.Extensions.Options;
 using PaymentService.Api.Middleware;
 using Hangfire;
 using PaymentService.Infrastructure.BackgroundJobs;
-using Autofac.Core;
 using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
