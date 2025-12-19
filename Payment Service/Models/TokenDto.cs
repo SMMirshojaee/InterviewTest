@@ -6,10 +6,11 @@ public class TokenDto
 {
     [Required(ErrorMessage = "شماره ترمینال الزامی است")]
     public required string TerminalNo { get; set; }
-    [Range(1, double.MaxValue,ErrorMessage = "مبلغ باید بیش از 0 باشد")]
+    [Range(1, double.MaxValue, ErrorMessage = "مبلغ باید بیش از 0 باشد")]
     [Required(ErrorMessage = "مبلغ الزامی است")]
     public required decimal Amount { get; set; }
     [Required(ErrorMessage = "آدرس بازگشتی الزامی است")]
+    [RegularExpression("^(https?):\\/\\/[^\\s/$.?#].[^\\s]*$",ErrorMessage = "آدرس بازگشتی معتبر نیست")]
     public required string RedirectUrl { get; set; }
     [Required(ErrorMessage = "شماره رزرو  الزامی است")]
     public required string ReservationNumber { get; set; }
