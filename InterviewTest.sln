@@ -10,17 +10,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentService.Api", "Payme
 		{F2830E25-3473-47F4-A076-C18813337F2D} = {F2830E25-3473-47F4-A076-C18813337F2D}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentService.Domain", "PaymentService.Domain\PaymentService.Domain.csproj", "{F2830E25-3473-47F4-A076-C18813337F2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentService.Domain", "PaymentService.Domain\PaymentService.Domain.csproj", "{F2830E25-3473-47F4-A076-C18813337F2D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentService.Application", "PaymentService.Application\PaymentService.Application.csproj", "{A8BC735C-5375-435E-953F-02E3A63E4D6A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentService.Application", "PaymentService.Application\PaymentService.Application.csproj", "{A8BC735C-5375-435E-953F-02E3A63E4D6A}"
 	ProjectSection(ProjectDependencies) = postProject
 		{F2830E25-3473-47F4-A076-C18813337F2D} = {F2830E25-3473-47F4-A076-C18813337F2D}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentService.Infrastructure", "PaymentService.Infrastructure\PaymentService.Infrastructure.csproj", "{31FEDB48-A0C0-41B8-8EEE-D80828AE9E69}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentService.Infrastructure", "PaymentService.Infrastructure\PaymentService.Infrastructure.csproj", "{31FEDB48-A0C0-41B8-8EEE-D80828AE9E69}"
 	ProjectSection(ProjectDependencies) = postProject
 		{F2830E25-3473-47F4-A076-C18813337F2D} = {F2830E25-3473-47F4-A076-C18813337F2D}
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GatewayService.Api", "GatewayService.Api\GatewayService.Api.csproj", "{F81C3D41-DA36-4633-A8FF-DED875D1E564}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GatewayService.Application", "GatewayService.Application\GatewayService.Application.csproj", "{27BC9D51-902D-40E9-9CAD-AAF5362BAEA0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +48,14 @@ Global
 		{31FEDB48-A0C0-41B8-8EEE-D80828AE9E69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31FEDB48-A0C0-41B8-8EEE-D80828AE9E69}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31FEDB48-A0C0-41B8-8EEE-D80828AE9E69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F81C3D41-DA36-4633-A8FF-DED875D1E564}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F81C3D41-DA36-4633-A8FF-DED875D1E564}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F81C3D41-DA36-4633-A8FF-DED875D1E564}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F81C3D41-DA36-4633-A8FF-DED875D1E564}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27BC9D51-902D-40E9-9CAD-AAF5362BAEA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27BC9D51-902D-40E9-9CAD-AAF5362BAEA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27BC9D51-902D-40E9-9CAD-AAF5362BAEA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27BC9D51-902D-40E9-9CAD-AAF5362BAEA0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

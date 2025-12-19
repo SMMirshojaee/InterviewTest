@@ -1,4 +1,4 @@
-﻿namespace PaymentService.Application.Models;
+﻿namespace GatewayService.Application.Models;
 
 public record VerifyResponse(bool IsSuccess,
     string? Status,

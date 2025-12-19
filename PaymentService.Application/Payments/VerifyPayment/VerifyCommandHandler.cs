@@ -23,33 +23,58 @@ public class VerifyCommandHandler(ITransactionRepository repository) : IRequestH
                 Amount: transaction.Amount,
                 ReservationNumber: transaction.ReservationNumber,
                 Rrn: null,
+                RedirectUrl: transaction.RedirectUrl,
                 Message: "زمان پرداخت منقضی شده است"
             );
-        if (transaction.Status == PaymentStatus.Failed)
-            return new VerifyResponse
-            (
-                IsSuccess: false,
-                Status: nameof(PaymentStatus.Failed),
-                Amount: transaction.Amount,
-                ReservationNumber: transaction.ReservationNumber,
-                Rrn: null,
-                Message: "پرداخت ناموفق بود"
-            );
-        if (transaction.Status == PaymentStatus.Success)
+        switch (transaction.Status)
         {
-            await repository.SetAppCode(transaction, request.AppCode);
-            return new VerifyResponse
-            (
-                IsSuccess: true,
-                Status: nameof(PaymentStatus.Success),
-                Amount: transaction.Amount,
-                ReservationNumber: transaction.ReservationNumber,
-                Rrn: transaction.RRN,
-                Message: "پرداخت با موفقیت تایید شد"
-            );
+            case PaymentStatus.Failed:
+                return new VerifyResponse
+                (
+                    IsSuccess: false,
+                    Status: nameof(PaymentStatus.Failed),
+                    Amount: transaction.Amount,
+                    ReservationNumber: transaction.ReservationNumber,
+                    Rrn: null,
+                    RedirectUrl: transaction.RedirectUrl,
+                    Message: "پرداخت ناموفق بود"
+                );
+            case PaymentStatus.Success:
+                return new VerifyResponse
+                (
+                    IsSuccess: true,
+                    Status: nameof(PaymentStatus.Success),
+                    Amount: transaction.Amount,
+                    ReservationNumber: transaction.ReservationNumber,
+                    Rrn: transaction.RRN,
+                    RedirectUrl: transaction.RedirectUrl,
+                    Message: "پرداخت با موفقیت تایید شد"
+                );
+            case PaymentStatus.Pending:
+                await repository.SetAppCode(transaction, request.AppCode);
+                return new VerifyResponse
+                (
+                    IsSuccess: true,
+                    Status: nameof(PaymentStatus.Pending),
+                    Amount: transaction.Amount,
+                    ReservationNumber: transaction.ReservationNumber,
+                    Rrn: null,
+                    RedirectUrl: transaction.RedirectUrl,
+                    Message: "در انتظار پرداخت"
+                );
+            case PaymentStatus.Expired:
+            default:
+                return new VerifyResponse
+                (
+                    IsSuccess: false,
+                    Status: nameof(PaymentStatus.Expired),
+                    Amount: transaction.Amount,
+                    ReservationNumber: transaction.ReservationNumber,
+                    Rrn: null,
+                    RedirectUrl: transaction.RedirectUrl,
+                    Message: "زمان پرداخت منقضی شده است"
+                );
         }
-
-        throw new ValidationException("توکن نامعتبر است");
 
         static bool IsExpired(Transaction transaction) =>
             transaction.CreatedAt.AddMinutes(2) < DateTime.Now;

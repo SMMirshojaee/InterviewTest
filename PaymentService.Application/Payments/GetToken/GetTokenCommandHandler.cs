@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Options;
 using PaymentService.Application.Common;
 using PaymentService.Application.Models;
-using PaymentService.Domain.Common;
 using PaymentService.Domain.Entities;
 using PaymentService.Domain.Interfaces;
 
