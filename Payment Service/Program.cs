@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using PaymentService.Infrastructure.Persistence;
 using Microsoft.Extensions.Options;
 using PaymentService.Api.Middleware;
+using Hangfire;
+using PaymentService.Infrastructure.BackgroundJobs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +41,10 @@ builder.Host.ConfigureContainer<ContainerBuilder>((context, containerBuilder) =>
 builder.Services.AddDbContext<PaymentDbContext>(options =>
     options.UseSqlServer(appSetting.ConnectionString));
 
+builder.Services.AddHangfire(config =>
+    config.UseSqlServerStorage(appSetting.ConnectionString));
+builder.Services.AddHangfireServer();
+builder.Services.AddTransient<TransactionsManagement>();
 var app = builder.Build();
 app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 app.UseMiddleware<ExceptionMiddleware>();
@@ -55,6 +61,16 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.UseHangfireDashboard();
+
+var jobClass = app.Services.GetRequiredService<TransactionsManagement>();
+
+app.Services.GetRequiredService<IRecurringJobManager>()
+    .AddOrUpdate(
+        "ExpirationCheckJob",
+        () => jobClass.ExpirationCheckJob(),
+        "*/30 * * * * *"
+    );
 app.Run();
 IConfigurationRoot CreateConfiguration()
 {

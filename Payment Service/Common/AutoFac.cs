@@ -17,7 +17,7 @@ public class AutofacDi : Module
 
         //foreach (Type type in types)
         //    builder.RegisterType(type).AsSelf();
-        builder.RegisterType<TransactionRepository>().As<ITransactionRepository>();
+        builder.RegisterType<TransactionRepository>().As<ITransactionRepository>(); 
     }
 
 }

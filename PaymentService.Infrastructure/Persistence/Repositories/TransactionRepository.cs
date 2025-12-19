@@ -7,6 +7,8 @@ namespace PaymentService.Infrastructure.Persistence.Repositories;
 
 public class TransactionRepository(PaymentDbContext dbContext) : ITransactionRepository
 {
+    public DbContext Context => dbContext;
+
     public async Task Add(Transaction transaction)
     {
         try

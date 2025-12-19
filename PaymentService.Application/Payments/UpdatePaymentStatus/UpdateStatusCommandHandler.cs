@@ -25,8 +25,11 @@ public class UpdateStatusCommandHandler(ITransactionRepository _repository)
         };
 
         transaction.RRN = request.IsSuccess ? request.Rrn : null;
-
+        transaction.UpdatedAt = DateTime.Now;
         await _repository.SaveChanges();
+
+        //TODO: رسالPaymentProcessedEventبهRabbitMQ
+        // 
         return new(IsSuccess: true, Message: "وضعیت با موفقیت به روزرسانی شد");
 
     }
