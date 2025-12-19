@@ -13,11 +13,6 @@ namespace PaymentService.Api.Controllers
     [ApiController]
     public class PaymentController(IMediator mediator, IMapper mapper) : ControllerBase
     {
-        [HttpGet("exception")]
-        public IActionResult Error()
-        {
-            throw new Exception("asd");
-        }
         [HttpPost("get-token")]
         public async Task<IActionResult> GetToken(TokenDto tokenRequest) =>
             Ok(await mediator.Send(mapper.Map<GetTokenCommand>(tokenRequest)));
