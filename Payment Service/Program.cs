@@ -10,6 +10,8 @@ using Microsoft.Extensions.Options;
 using PaymentService.Api.Middleware;
 using Hangfire;
 using PaymentService.Infrastructure.BackgroundJobs;
+using Autofac.Core;
+using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +47,19 @@ builder.Services.AddHangfire(config =>
     config.UseSqlServerStorage(appSetting.ConnectionString));
 builder.Services.AddHangfireServer();
 builder.Services.AddTransient<TransactionsManagement>();
+
+builder.Services.AddMassTransit(x =>
+{
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host("rabbitmq://localhost", h =>
+        {
+            h.Username("guest");
+            h.Password("guest");
+        });
+    });
+});
+
 var app = builder.Build();
 app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 app.UseMiddleware<ExceptionMiddleware>();

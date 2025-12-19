@@ -2,12 +2,14 @@
 using PaymentService.Application.Models;
 using PaymentService.Domain.Interfaces;
 using System.ComponentModel.DataAnnotations;
+using MassTransit;
 using PaymentService.Domain.Entities;
 using PaymentService.Domain.Enums;
+using SHARE.Model;
 
 namespace PaymentService.Application.Payments.VerifyPayment;
 
-public class VerifyCommandHandler(ITransactionRepository repository) : IRequestHandler<VerifyCommand, VerifyResponse>
+public class VerifyCommandHandler(ITransactionRepository repository, IPublishEndpoint publisher) : IRequestHandler<VerifyCommand, VerifyResponse>
 {
     public async Task<VerifyResponse> Handle(VerifyCommand request, CancellationToken cancellationToken)
     {
@@ -16,6 +18,8 @@ public class VerifyCommandHandler(ITransactionRepository repository) : IRequestH
             throw new ValidationException("توکن نامعتبر است");
 
         if (IsExpired(transaction))
+        {
+            await publisher.Publish(new VerifyMessage(request.Token, nameof(PaymentStatus.Expired)), cancellationToken);
             return new VerifyResponse
             (
                 IsSuccess: false,
@@ -26,9 +30,13 @@ public class VerifyCommandHandler(ITransactionRepository repository) : IRequestH
                 RedirectUrl: transaction.RedirectUrl,
                 Message: "زمان پرداخت منقضی شده است"
             );
+        }
         switch (transaction.Status)
         {
             case PaymentStatus.Failed:
+                await publisher.Publish(new VerifyMessage(request.Token, nameof(PaymentStatus.Failed)),
+                    cancellationToken);
+
                 return new VerifyResponse
                 (
                     IsSuccess: false,
@@ -40,6 +48,9 @@ public class VerifyCommandHandler(ITransactionRepository repository) : IRequestH
                     Message: "پرداخت ناموفق بود"
                 );
             case PaymentStatus.Success:
+                await publisher.Publish(new VerifyMessage(request.Token, nameof(PaymentStatus.Success)),
+                    cancellationToken);
+
                 return new VerifyResponse
                 (
                     IsSuccess: true,
@@ -51,6 +62,9 @@ public class VerifyCommandHandler(ITransactionRepository repository) : IRequestH
                     Message: "پرداخت با موفقیت تایید شد"
                 );
             case PaymentStatus.Pending:
+                await publisher.Publish(new VerifyMessage(request.Token, nameof(PaymentStatus.Pending)),
+                    cancellationToken);
+
                 await repository.SetAppCode(transaction, request.AppCode);
                 return new VerifyResponse
                 (
@@ -64,6 +78,9 @@ public class VerifyCommandHandler(ITransactionRepository repository) : IRequestH
                 );
             case PaymentStatus.Expired:
             default:
+                await publisher.Publish(new VerifyMessage(request.Token, nameof(PaymentStatus.Expired)),
+                    cancellationToken);
+
                 return new VerifyResponse
                 (
                     IsSuccess: false,

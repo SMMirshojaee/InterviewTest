@@ -4,26 +4,20 @@ using System.Text;
 using GatewayService.Application.Common;
 using GatewayService.Application.Common.Enums;
 using GatewayService.Application.Models;
+using MassTransit;
 using MediatR;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using SHARE.Model;
 
 namespace GatewayService.Application.Features.Pay;
 
-public class PayCommandHandler : IRequestHandler<PayCommand, PayResponse>
+public class PayCommandHandler(HttpClient client, IOptions<ServiceUrls> serviceUrls, IPublishEndpoint publisher)
+    : IRequestHandler<PayCommand, PayResponse>
 {
-    private readonly HttpClient _client;
-    private readonly IOptions<ServiceUrls> _serviceUrls;
-
-    public PayCommandHandler(HttpClient client, IOptions<ServiceUrls> serviceUrls)
-    {
-        _client = client;
-        _serviceUrls = serviceUrls;
-    }
-
     public async Task<PayResponse> Handle(PayCommand request, CancellationToken cancellationToken)
     {
-        HttpResponseMessage? response = await _client.PostAsJsonAsync(_serviceUrls.Value.PaymentServiceVerifyUrl, new VerifyDto
+        HttpResponseMessage? response = await client.PostAsJsonAsync(serviceUrls.Value.PaymentServiceVerifyUrl, new VerifyDto
         {
             Token = request.Token,
             AppCode = CreateRandomString(8)
@@ -42,6 +36,9 @@ public class PayCommandHandler : IRequestHandler<PayCommand, PayResponse>
         {
             bool isSuccessful = new Random().NextDouble() <= 0.8;
             string? rrn = isSuccessful ? CreateRandomString(12) : null;
+
+            await publisher.Publish(new PayMessage(request.Token, isSuccessful, rrn), cancellationToken);
+
             StringContent updateContent = new StringContent(JsonConvert.SerializeObject(new UpdateStatusDto
             {
                 IsSuccess = isSuccessful,
@@ -49,7 +46,7 @@ public class PayCommandHandler : IRequestHandler<PayCommand, PayResponse>
                 Token = request.Token
             }), Encoding.UTF8, "application/json");
 
-            await _client.PostAsync($"{_serviceUrls.Value.PaymentServiceUpdateStatusUrl}", updateContent, cancellationToken);
+            await client.PostAsync($"{serviceUrls.Value.PaymentServiceUpdateStatusUrl}", updateContent, cancellationToken);
 
             return new PayResponse(isSuccessful, request.Token, rrn, verifyResponse.Amount, isSuccessful ? "پرداخت با موفقیت انجام شد" : "پرداخت ناموفق بود", verifyResponse.RedirectUrl);
 

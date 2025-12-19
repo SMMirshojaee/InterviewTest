@@ -22,9 +22,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentService.Infrastructu
 		{F2830E25-3473-47F4-A076-C18813337F2D} = {F2830E25-3473-47F4-A076-C18813337F2D}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GatewayService.Api", "GatewayService.Api\GatewayService.Api.csproj", "{F81C3D41-DA36-4633-A8FF-DED875D1E564}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GatewayService.Api", "GatewayService.Api\GatewayService.Api.csproj", "{F81C3D41-DA36-4633-A8FF-DED875D1E564}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GatewayService.Application", "GatewayService.Application\GatewayService.Application.csproj", "{27BC9D51-902D-40E9-9CAD-AAF5362BAEA0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GatewayService.Application", "GatewayService.Application\GatewayService.Application.csproj", "{27BC9D51-902D-40E9-9CAD-AAF5362BAEA0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationService.Console", "NotificationService.Console\NotificationService.Console.csproj", "{3B88068C-71D7-45A9-AF24-0937E5063E58}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SHARE", "SHARE\SHARE.csproj", "{3A6CE5C8-3586-4B2E-A958-A04ED06F6CB2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,6 +60,14 @@ Global
 		{27BC9D51-902D-40E9-9CAD-AAF5362BAEA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27BC9D51-902D-40E9-9CAD-AAF5362BAEA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27BC9D51-902D-40E9-9CAD-AAF5362BAEA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B88068C-71D7-45A9-AF24-0937E5063E58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B88068C-71D7-45A9-AF24-0937E5063E58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B88068C-71D7-45A9-AF24-0937E5063E58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B88068C-71D7-45A9-AF24-0937E5063E58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A6CE5C8-3586-4B2E-A958-A04ED06F6CB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A6CE5C8-3586-4B2E-A958-A04ED06F6CB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A6CE5C8-3586-4B2E-A958-A04ED06F6CB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A6CE5C8-3586-4B2E-A958-A04ED06F6CB2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

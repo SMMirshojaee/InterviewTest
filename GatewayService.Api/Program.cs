@@ -1,6 +1,7 @@
 using GatewayService.Api.Middleware;
 using GatewayService.Application.Common;
 using GatewayService.Application.Features.Pay;
+using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,17 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(PayCommandHandler).Assembly));
 builder.Services.AddHttpClient();
 
+builder.Services.AddMassTransit(x =>
+{
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host("rabbitmq://localhost", h =>
+        {
+            h.Username("guest");
+            h.Password("guest");
+        });
+    });
+});
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionMiddleware>();
